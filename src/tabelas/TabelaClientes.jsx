@@ -6,7 +6,7 @@ export default function TabelaClientes(props) {
 
     function filtrarClientes(e) {
         const termoBusca = e.currentTarget.value.toLowerCase();
-        fetch(urlBase + "/cliente", { method: "GET" })
+        fetch('http://129.146.68.51/aluno17-pfsii/clientes', { method: "GET" }) // Usando o URL base completo
             .then((resposta) => resposta.json())
             .then((listaClientes) => {
                 if (Array.isArray(listaClientes)) {
