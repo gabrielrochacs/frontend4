@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { urlBase } from '../../utilitarios/definicoes';
+import CaixaSelecao from '../../utilitarios/caixaSelecao';
 
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
@@ -101,19 +102,19 @@ export default function FormVendas(props) {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Cliente:</Form.Label>
-                        <Form.Control as="select" value={venda.cliente_id} id='cliente_id' onChange={manipulaMudanca} required>
-                            <option value="">Selecione um cliente</option>
-                            {clientes.map((cliente) => (
-                                <option key={cliente.cpf} value={cliente.cpf}>
-                                    {cliente.cpf}
-                                </option>
-                            ))}
-                        </Form.Control>
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, selecione um cliente.
-                        </Form.Control.Feedback>
+                    <Form.Group className="mb-3 border">
+                        <Form.Label>Selecione o Cliente:</Form.Label>
+                        <Col md={10}>
+                            <CaixaSelecao
+                                enderecoDados="http://129.146.68.51/aluno17-pfsii/clientes"
+                                campoChave="id"
+                                campoExibicao="nome"
+                                funcaoSelecao={(clienteSelecionado) => setVenda({ ...venda, cliente_id: clienteSelecionado })}
+                            />
+                            <Form.Control.Feedback type='invalid'>
+                                Por favor, selecione um cliente.
+                            </Form.Control.Feedback>
+                        </Col>
                     </Form.Group>
                 </Col>
             </Row>
