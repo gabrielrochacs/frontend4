@@ -68,7 +68,7 @@ export default function FormVendas(props) {
     }
 
     function validarCampos() {
-        const camposObrigatorios = ['data', 'valor', 'cpf'];
+        const camposObrigatorios = ['data', 'valor', 'cliente_id'];
         for (const campo of camposObrigatorios) {
             if (!venda[campo]) {
                 window.alert(`O campo "${campo}" é obrigatório.`);
@@ -107,9 +107,9 @@ export default function FormVendas(props) {
                         <Col md={10}>
                             <CaixaSelecao
                                 enderecoDados="http://129.146.68.51/aluno17-pfsii/clientes"
-                                campoChave="cpf"
+                                campoChave="id"
                                 campoExibicao="nome"
-                                funcaoSelecao={(clienteSelecionado) => setVenda({ ...venda, cpf: clienteSelecionado })}
+                                funcaoSelecao={(clienteSelecionado) => setVenda({ ...venda, cliente_id: clienteSelecionado })}
                             />
                             <Form.Control.Feedback type='invalid'>
                                 Por favor, selecione um cliente.
