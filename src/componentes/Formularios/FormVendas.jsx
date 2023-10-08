@@ -46,19 +46,23 @@ export default function FormVendas(props) {
                 if (dados.status) {
                     if (!props.modoEdicao) {
                         const novaVenda = { ...venda, id: dados.id };
-                        props.setVendas([...props.listaVendas, novaVenda]);
-                    } else {
-                        const listaAtualizada = props.listaVendas.map((item) =>
-                            item.id === venda.id ? venda : item
-                        );
-                        props.setVendas(listaAtualizada);
-                    }
+                        // Atualize a lista local de vendas fazendo uma nova solicitação ao banco de dados
+                        fetch(urlBase + "/vendas", {
+                            method: "GET"
+                        })
+                            .then((resposta) => resposta.json())
+                            .then((dados) => {
+                                if (Array.isArray(dados)) {
+                                    props.setVendas([...dados]);
+                                }
+                            })
+                            .catch((erro) => {
+                                console.error("Erro ao buscar os dados das vendas: " + erro);
+                            });
 
-                    props.exibirTabela(true);
-                    window.alert('Venda salva com sucesso!');
-                } else {
-                    window.alert(dados.mensagem);
-                }
+                        props.exibirTabela(true);
+                        window.alert('Venda salva com sucesso!');
+                        }}
             } catch (erro) {
                 window.alert('Erro ao executar a requisição: ' + erro.message);
             }
