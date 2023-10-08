@@ -8,8 +8,8 @@ export default function FormVendas(props) {
     const [clienteSelecionado, setClienteSelecionado] = useState("");
 
     useEffect(() => {
-        // Carregar a lista de clientes do banco de dados ou de onde quer que você obtenha os dados
-        fetch(urlBase + "/clientes", {
+        // Carregar a lista de clientes do banco de dados
+        fetch("http://129.146.68.51/aluno17-pfsii/cliente", {
             method: "GET"
         })
             .then((resposta) => {
@@ -35,12 +35,6 @@ export default function FormVendas(props) {
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
             const endpoint = props.modoEdicao ? `/venda` : '/venda';
-
-            // Defina cliente_id como o cpf do cliente selecionado
-            const cliente = clientes.find((c) => c.cpf === clienteSelecionado);
-            if (cliente) {
-                setVenda({ ...venda, cliente_id: cliente.cpf });
-            }
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
@@ -108,21 +102,19 @@ export default function FormVendas(props) {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3 border">
-                        <Form.Label>Selecione o Cliente:</Form.Label>
-                        <Col md={10}>
-                            <Form.Control as="select" value={clienteSelecionado} onChange={(e) => setClienteSelecionado(e.target.value)} required>
-                                <option value="">Selecione um cliente</option>
-                                {clientes.map((cliente) => (
-                                    <option key={cliente.cpf} value={cliente.cpf}>
-                                        {cliente.nome}
-                                    </option>
-                                ))}
-                            </Form.Control>
-                            <Form.Control.Feedback type='invalid'>
-                                Por favor, selecione um cliente.
-                            </Form.Control.Feedback>
-                        </Col>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Cliente:</Form.Label>
+                        <Form.Control as="select" value={clienteSelecionado} id='cliente_id' onChange={manipulaMudanca} required>
+                            <option value="">Selecione um cliente</option>
+                            {clientes.map((cliente) => (
+                                <option key={cliente.cpf} value={cliente.cpf}>
+                                    {cliente.nome} - {cliente.cpf}
+                                </option>
+                            ))}
+                        </Form.Control>
+                        <Form.Control.Feedback type='invalid'>
+                            Por favor, selecione um cliente.
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
