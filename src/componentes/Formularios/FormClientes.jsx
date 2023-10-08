@@ -1,28 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormClientes(props) {
     const [cliente, setCliente] = useState(props.cliente);
-    const [clientes, setClientes] = useState([]);
-
-    useEffect(() => {
-        async function buscarClientes() {
-            try {
-                const resposta = await fetch('http://129.146.68.51/aluno17-pfsii/clientes');
-                const dados = await resposta.json();
-                if (dados.status) {
-                    setClientes(dados.clientes); // Assumindo que o servidor retorna um array de clientes
-                } else {
-                    window.alert(dados.mensagem);
-                }
-            } catch (erro) {
-                window.alert('Erro ao buscar clientes: ' + erro.message);
-            }
-        }
-
-        buscarClientes();
-    }, []);
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
