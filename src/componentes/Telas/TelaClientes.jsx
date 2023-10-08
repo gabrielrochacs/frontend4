@@ -52,8 +52,8 @@ export default function TelaClientes(props) {
     }
 
     useEffect(() => {
-        fetch(urlBase + "/cliente", {
-            method: "GET"
+        fetch('http://129.146.68.51/aluno17-pfsii/cliente', {
+            method: "GET" // Usando o URL base completo
         })
             .then((resposta) => {
                 return resposta.json();
