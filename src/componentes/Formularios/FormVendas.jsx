@@ -5,11 +5,10 @@ import { urlBase } from '../../utilitarios/definicoes';
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
     const [clientes, setClientes] = useState([]); // Corrigido para setClientes
-    const [exibirTabela, setExibirTabela] = useState(true);
 
     useEffect(() => {
         // Carregar a lista de clientes do banco de dados
-        fetch(urlBase + "/vendas", {
+        fetch(urlBase + "/clientes", {
             method: "GET"
         })
             .then((resposta) => resposta.json())
