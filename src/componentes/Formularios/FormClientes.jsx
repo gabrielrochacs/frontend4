@@ -18,7 +18,7 @@ export default function FormClientes(props) {
             const endpoint = props.modoEdicao ? `/cliente` : '/cliente';
 
             try {
-                const resposta = await fetch(`http://129.146.68.51/aluno17-pfsii/clientes${endpoint}`, {
+                const resposta = await fetch(urlBase + endpoint, {
                     method: metodo,
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(cliente),
