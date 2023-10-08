@@ -4,22 +4,22 @@ import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
-    const [clientesSelecionaveis, setClientesSelecionaveis] = useState([]);
+    const [clientes, setClientes] = useState([]);
 
     useEffect(() => {
-        // Carregar a lista de clientes selecionáveis do novo link
-        fetch("http://129.146.68.51/aluno17-pfsii/clientes", {
+        // Carregar a lista de clientes do banco de dados ou de onde quer que você obtenha os dados
+        fetch(urlBase + "/clientes", {
             method: "GET"
         })
             .then((resposta) => {
                 return resposta.json();
             }).then((dados) => {
                 if (Array.isArray(dados)) {
-                    setClientesSelecionaveis([...dados]);
+                    setClientes([...dados]);
                 }
             })
             .catch((erro) => {
-                console.error("Erro ao buscar os dados dos clientes selecionáveis: " + erro);
+                console.error("Erro ao buscar os dados dos clientes: " + erro);
             });
     }, []);
 
@@ -36,10 +36,6 @@ export default function FormVendas(props) {
             const endpoint = props.modoEdicao ? `/venda` : '/venda';
 
             try {
-                // Obtenha o cliente selecionado com base no ID selecionado na caixa de seleção
-                const clienteSelecionado = clientesSelecionaveis.find(cliente => cliente.id === parseInt(venda.cliente_id));
-                venda.cliente_id = clienteSelecionado ? clienteSelecionado.id : null;
-
                 const resposta = await fetch(urlBase + endpoint, {
                     method: metodo,
                     headers: { 'Content-Type': 'application/json' },
@@ -109,9 +105,9 @@ export default function FormVendas(props) {
                         <Form.Label>Cliente:</Form.Label>
                         <Form.Control as="select" value={venda.cliente_id} id='cliente_id' onChange={manipulaMudanca} required>
                             <option value="">Selecione um cliente</option>
-                            {clientesSelecionaveis.map((cliente) => (
-                                <option key={cliente.id} value={cliente.id}>
-                                    {cliente.nome}
+                            {clientes.map((cliente) => (
+                                <option key={cliente.cpf} value={cliente.cpf}>
+                                    {cliente.cpf}
                                 </option>
                             ))}
                         </Form.Control>
