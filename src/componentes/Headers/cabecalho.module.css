@@ -1,0 +1,11 @@
+.cabecalho{
+    text-align: center; 
+    text-shadow: 1px 1px rgb(253, 0, 0); 
+    font-size: 50px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+    background-color: rgb(24, 23, 23); 
+    color: aliceblue;
+    height: 65px;
+    border-top: 1px solid rgb(48, 53, 53);
+   
+}
+
