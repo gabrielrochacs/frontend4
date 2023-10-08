@@ -4,24 +4,26 @@ import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
-    const [clientes, setClientes] = useState([]);
+    const [clientes, setVendas] = useState([]);
 
     useEffect(() => {
-        // Carregar a lista de clientes do banco de dados ou de onde quer que você obtenha os dados
-        fetch(urlBase + "/clientes", {
+        // Carregar a lista de vendas do banco de dados
+        fetch(urlBase + "/vendas", {
             method: "GET"
         })
             .then((resposta) => {
                 return resposta.json();
-            }).then((dados) => {
+            })
+            .then((dados) => {
                 if (Array.isArray(dados)) {
-                    setClientes([...dados]);
+                    setVendas([...dados]);
                 }
             })
             .catch((erro) => {
-                console.error("Erro ao buscar os dados dos clientes: " + erro);
+                console.error("Erro ao buscar os dados das vendas: " + erro);
             });
     }, []);
+
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
@@ -33,7 +35,7 @@ export default function FormVendas(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/venda` : '/venda';
+            const endpoint = props.modoEdicao ? `/vendas/${venda.id}` : '/vendas'; // Alteração aqui
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
