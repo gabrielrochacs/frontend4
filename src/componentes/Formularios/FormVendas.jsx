@@ -4,23 +4,22 @@ import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
-    const [clientes, setClientes] = useState([]);
-    const [clienteSelecionado, setClienteSelecionado] = useState('');
+    const [clientesSelecionaveis, setClientesSelecionaveis] = useState([]);
 
     useEffect(() => {
-        // Carregar a lista de clientes do banco de dados ou de onde quer que você obtenha os dados
-        fetch(urlBase + "/clientes", {
+        // Carregar a lista de clientes selecionáveis do novo link
+        fetch("http://129.146.68.51/aluno17-pfsii/clientes", {
             method: "GET"
         })
             .then((resposta) => {
                 return resposta.json();
             }).then((dados) => {
                 if (Array.isArray(dados)) {
-                    setClientes([...dados]);
+                    setClientesSelecionaveis([...dados]);
                 }
             })
             .catch((erro) => {
-                console.error("Erro ao buscar os dados dos clientes: " + erro);
+                console.error("Erro ao buscar os dados dos clientes selecionáveis: " + erro);
             });
     }, []);
 
@@ -37,6 +36,10 @@ export default function FormVendas(props) {
             const endpoint = props.modoEdicao ? `/venda` : '/venda';
 
             try {
+                // Obtenha o cliente selecionado com base no ID selecionado na caixa de seleção
+                const clienteSelecionado = clientesSelecionaveis.find(cliente => cliente.id === parseInt(venda.cliente_id));
+                venda.cliente_id = clienteSelecionado ? clienteSelecionado.id : null;
+
                 const resposta = await fetch(urlBase + endpoint, {
                     method: metodo,
                     headers: { 'Content-Type': 'application/json' },
@@ -104,10 +107,10 @@ export default function FormVendas(props) {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Cliente:</Form.Label>
-                        <Form.Control as="select" value={clienteSelecionado} onChange={(e) => setClienteSelecionado(e.target.value)} required>
+                        <Form.Control as="select" value={venda.cliente_id} id='cliente_id' onChange={manipulaMudanca} required>
                             <option value="">Selecione um cliente</option>
-                            {clientes.map((cliente) => (
-                                <option key={cliente.cpf} value={cliente.cpf}>
+                            {clientesSelecionaveis.map((cliente) => (
+                                <option key={cliente.id} value={cliente.id}>
                                     {cliente.nome}
                                 </option>
                             ))}
