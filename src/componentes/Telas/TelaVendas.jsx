@@ -31,19 +31,21 @@ export default function TelaVendas(props) {
         }).then((resposta) => {
             return resposta.json();
         }).then((retorno) => {
-            setAtualizarTabela(true);
-            window.alert('Dados da venda apagados com sucesso!');
-            window.location.reload();
             if (retorno.resultado) {
-                console.log('  ');
+                window.alert('Dados da venda apagados com sucesso!');
+                // Atualize a lista local de vendas após a exclusão
+                const vendasAtualizadas = vendas.filter((v) => v.id !== venda.id);
+                setVendas(vendasAtualizadas);
             } else if (retorno.resultado === false) {
                 window.alert('Não foi possível apagar os dados da venda!');
             }
+        }).catch((erro) => {
+            console.error("Erro ao excluir a venda: " + erro);
         });
     }
 
     useEffect(() => {
-        fetch(urlBase + "/venda", {
+        fetch(urlBase + "/vendas", {
             method: "GET"
         })
             .then((resposta) => {
