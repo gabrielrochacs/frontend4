@@ -17,7 +17,7 @@ function App() {
         <Route path="/produtos" element={<TelaProdutos />} />
         <Route path="/vendas" element={<TelaVendas />} />
         <Route path="/itensVenda" element={<TelaItensVenda />} />
-        <Route path="/frontend4/" element={<TelaPrincipal/>} />
+        <Route path="/" element={<TelaPrincipal/>} />
         <Route path="*" element={<Tela404/>} />
       </Routes>
     </BrowserRouter>
