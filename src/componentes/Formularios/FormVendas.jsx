@@ -4,26 +4,24 @@ import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
-    const [clientes, setVendas] = useState([]);
+    const [clientes, setClientes] = useState([]); // Corrigido para setClientes
+    const [exibirTabela, setExibirTabela] = useState(true);
 
     useEffect(() => {
-        // Carregar a lista de vendas do banco de dados
-        fetch(urlBase + "/vendas", {
+        // Carregar a lista de clientes do banco de dados
+        fetch(urlBase + "/clientes", {
             method: "GET"
         })
-            .then((resposta) => {
-                return resposta.json();
-            })
+            .then((resposta) => resposta.json())
             .then((dados) => {
                 if (Array.isArray(dados)) {
-                    setVendas([...dados]);
+                    setClientes([...dados]);
                 }
             })
             .catch((erro) => {
-                console.error("Erro ao buscar os dados das vendas: " + erro);
+                console.error("Erro ao buscar os dados dos clientes: " + erro);
             });
     }, []);
-
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
@@ -35,7 +33,7 @@ export default function FormVendas(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/vendas/${venda.id}` : '/vendas'; // Alteração aqui
+            const endpoint = props.modoEdicao ? `/vendas/${venda.id}` : '/vendas';
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
@@ -109,7 +107,7 @@ export default function FormVendas(props) {
                             <option value="">Selecione um cliente</option>
                             {clientes.map((cliente) => (
                                 <option key={cliente.cpf} value={cliente.cpf}>
-                                    {cliente.cpf}
+                                    {cliente.nome} ({cliente.cpf})
                                 </option>
                             ))}
                         </Form.Control>
