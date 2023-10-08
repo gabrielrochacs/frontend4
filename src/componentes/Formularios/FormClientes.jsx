@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormClientes(props) {
     const [cliente, setCliente] = useState(props.cliente);
+
+    // UseEffect para fazer a requisição HTTP quando o componente for montado
+    useEffect(() => {
+        async function fetchData() {
+            if (props.modoEdicao) {
+                // Se estiver em modo de edição, preencha o formulário com os dados do cliente
+                setCliente(props.cliente);
+            }
+        }
+        fetchData();
+    }, [props.modoEdicao, props.cliente]);
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
