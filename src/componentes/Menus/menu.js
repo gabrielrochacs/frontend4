@@ -15,7 +15,7 @@ export default function Menu(propriedades){
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <LinkContainer to='/'><Dropdown.Item>Menu Principal</Dropdown.Item></LinkContainer>
+              <LinkContainer to='/frontend4/'><Dropdown.Item>Menu Principal</Dropdown.Item></LinkContainer>
               <LinkContainer to='/clientes'><Dropdown.Item >Cadastro de Clientes</Dropdown.Item></LinkContainer>
               <LinkContainer to='/produtos'><Dropdown.Item >Cadastro de Produtos</Dropdown.Item></LinkContainer>
               <LinkContainer to='/vendas'><Dropdown.Item >Cadastro de Vendas</Dropdown.Item></LinkContainer>
