@@ -5,6 +5,7 @@ import { urlBase } from '../../utilitarios/definicoes';
 export default function FormVendas(props) {
     const [venda, setVenda] = useState(props.venda);
     const [clientes, setClientes] = useState([]);
+    const [clienteSelecionado, setClienteSelecionado] = useState('');
 
     useEffect(() => {
         // Carregar a lista de clientes do banco de dados ou de onde quer que você obtenha os dados
@@ -103,11 +104,11 @@ export default function FormVendas(props) {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Cliente:</Form.Label>
-                        <Form.Control as="select" value={venda.cliente_id} id='cliente_id' onChange={manipulaMudanca} required>
+                        <Form.Control as="select" value={clienteSelecionado} onChange={(e) => setClienteSelecionado(e.target.value)} required>
                             <option value="">Selecione um cliente</option>
                             {clientes.map((cliente) => (
                                 <option key={cliente.cpf} value={cliente.cpf}>
-                                    {cliente.cpf}
+                                    {cliente.nome}
                                 </option>
                             ))}
                         </Form.Control>
