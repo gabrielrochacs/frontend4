@@ -9,7 +9,7 @@ export default function FormVendas(props) {
 
     useEffect(() => {
         // Carregar a lista de clientes do banco de dados
-        fetch(urlBase + "/clientes", {
+        fetch(urlBase + "/vendas", {
             method: "GET"
         })
             .then((resposta) => resposta.json())
