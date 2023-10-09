@@ -33,23 +33,28 @@ export default function TelaClientes(props) {
     }
 
     function excluirCliente(cliente) {
-        fetch(urlBase + '/clientes', {
+        const cpf = cliente.cpf;
+
+        fetch(urlBase + `/clientes/${cpf}`, {
             method: "DELETE",
-            headers: { "Content-Type": 'application/json' },
-            body: JSON.stringify(cliente)
-        }).then((resposta) => {
-            return resposta.json()
-        }).then((retorno) => {
-            setAtualizarTabela(true)
-            window.alert('Dados apagados com sucesso !!! ')
-            window.location.reload();
-            if (retorno.resultado) {
-                console.log('  ')
-            } else if (retorno.resultado === false) {
-                window.alert('Não foi possível apagar os dados do cliente !!!');
-            }
+            headers: { "Content-Type": 'application/json' }
         })
+            .then((resposta) => resposta.json())
+            .then((retorno) => {
+                if (retorno.status) {
+                    setAtualizarTabela(true);
+                    window.alert('Dados apagados com sucesso !!!');
+                    window.location.reload(); // Recarrega a página após a exclusão
+                } else {
+                    window.alert('Não foi possível apagar os dados do cliente !!!');
+                }
+            })
+            .catch((erro) => {
+                console.error("Erro ao excluir cliente: " + erro);
+                window.alert('Erro ao excluir cliente: ' + erro.message);
+            });
     }
+
 
     useEffect(() => {
         fetch(urlBase + "/clientes", {

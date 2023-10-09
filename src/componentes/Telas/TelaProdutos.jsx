@@ -25,23 +25,28 @@ export default function TelaProdutos(props) {
     }
 
     function excluirProduto(produto) {
-        fetch(urlBase + '/produtos', {
+        const id = produto.id;
+
+        fetch(urlBase + `/produtos/${id}`, {
             method: "DELETE",
-            headers: { "Content-Type": 'application/json' },
-            body: JSON.stringify(produto)
-        }).then((resposta) => {
-            return resposta.json()
-        }).then((retorno) => {
-            setAtualizarTabela(true);
-            window.alert('Dados apagados com sucesso !!! ');
-            window.location.reload();
-            if (retorno.resultado) {
-                console.log('  ');
-            } else if (retorno.resultado === false) {
-                window.alert('Não foi possível apagar os dados do produto !!!');
-            }
-        });
+            headers: { "Content-Type": 'application/json' }
+        })
+            .then((resposta) => resposta.json())
+            .then((retorno) => {
+                if (retorno.status) {
+                    setAtualizarTabela(true);
+                    window.alert('Dados apagados com sucesso !!!');
+                    window.location.reload();
+                } else {
+                    window.alert('Não foi possível apagar os dados do produto !!!');
+                }
+            })
+            .catch((erro) => {
+                console.error("Erro ao excluir produto: " + erro);
+                window.alert('Erro ao excluir produto: ' + erro.message);
+            });
     }
+
 
     useEffect(() => {
         fetch(urlBase + "/produtos", {
