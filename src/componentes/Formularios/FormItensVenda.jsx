@@ -3,7 +3,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormItensVenda(props) {
-    const [itemVenda, setItemVenda] = useState(props.itemVenda);
+    const [itensVenda, setitensVenda] = useState(props.itensVenda);
     const [produtos, setProdutos] = useState([]);
     const [vendas, setVendas] = useState([]);
 
@@ -41,7 +41,7 @@ export default function FormItensVenda(props) {
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
-        setItemVenda({ ...itemVenda, [id]: value });
+        setitensVenda({ ...itensVenda, [id]: value });
     }
 
     async function manipulaSubmissao(e) {
@@ -49,24 +49,26 @@ export default function FormItensVenda(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/itemvenda` : '/itemvenda';
+            // No método manipulaSubmissao, altere o endpoint para '/itensVenda' (com a primeira letra em maiúscula) ao criar um novo item de venda
+            const endpoint = props.modoEdicao ? '/itensVendas' : '/itensVendas';
+
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
                     method: metodo,
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(itemVenda),
+                    body: JSON.stringify(itensVenda),
                 });
 
                 const dados = await resposta.json();
 
                 if (dados.status) {
                     if (!props.modoEdicao) {
-                        const novoItemVenda = { ...itemVenda, id: dados.id };
-                        props.setItensVenda([...props.listaItensVenda, novoItemVenda]);
+                        const novoitensVenda = { ...itensVenda, id: dados.id };
+                        props.setItensVenda([...props.listaItensVenda, novoitensVenda]);
                     } else {
                         const listaAtualizada = props.listaItensVenda.map((item) =>
-                            item.id === itemVenda.id ? itemVenda : item
+                            item.id === itensVenda.id ? itensVenda : item
                         );
                         props.setItensVenda(listaAtualizada);
                     }
@@ -85,7 +87,7 @@ export default function FormItensVenda(props) {
     function validarCampos() {
         const camposObrigatorios = ['produto_id', 'quantidade', 'venda_id'];
         for (const campo of camposObrigatorios) {
-            if (!itemVenda[campo]) {
+            if (!itensVenda[campo]) {
                 window.alert(`O campo "${campo}" é obrigatório.`);
                 return false;
             }
@@ -99,7 +101,7 @@ export default function FormItensVenda(props) {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Produto:</Form.Label>
-                        <Form.Control as="select" value={itemVenda.produto_id} id='produto_id' onChange={manipulaMudanca} required>
+                        <Form.Control as="select" value={itensVenda.produto_id} id='produto_id' onChange={manipulaMudanca} required>
                             <option value="">Selecione um produto</option>
                             {produtos.map((produto) => (
                                 <option key={produto.id} value={produto.id}>
@@ -115,7 +117,7 @@ export default function FormItensVenda(props) {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Quantidade:</Form.Label>
-                        <Form.Control type="text" placeholder="Informe a quantidade" value={itemVenda.quantidade} id='quantidade' onChange={manipulaMudanca} required />
+                        <Form.Control type="text" placeholder="Informe a quantidade" value={itensVenda.quantidade} id='quantidade' onChange={manipulaMudanca} required />
                         <Form.Control.Feedback type='invalid'>
                             Por favor, informe a quantidade.
                         </Form.Control.Feedback>
@@ -126,7 +128,7 @@ export default function FormItensVenda(props) {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Venda:</Form.Label>
-                        <Form.Control as="select" value={itemVenda.venda_id} id='venda_id' onChange={manipulaMudanca} required>
+                        <Form.Control as="select" value={itensVenda.venda_id} id='venda_id' onChange={manipulaMudanca} required>
                             <option value="">Selecione uma venda</option>
                             {vendas.map((venda) => (
                                 <option key={venda.id} value={venda.id}>

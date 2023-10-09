@@ -4,10 +4,20 @@ import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormClientes(props) {
     const [cliente, setCliente] = useState(props.cliente);
+    const [clienteEditandoId, setClienteEditandoId] = useState(null); // Estado para rastrear o cliente em edição
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
         setCliente({ ...cliente, [id]: value });
+    }
+
+    function editarCliente(id) {
+        // Quando clicar em editar, definir o id do cliente em edição
+        setClienteEditandoId(id);
+        // Encontrar o cliente pelo id
+        const clienteEditando = props.listaClientes.find((c) => c.id === id);
+        // Preencher o formulário com os dados do cliente a ser editado
+        setCliente(clienteEditando);
     }
 
     async function manipulaSubmissao(e) {
@@ -15,7 +25,7 @@ export default function FormClientes(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/cliente` : '/cliente';
+            const endpoint = props.modoEdicao ? `/clientes/${clienteEditandoId}` : '/clientes';
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
@@ -23,27 +33,30 @@ export default function FormClientes(props) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(cliente),
                 });
-
+                console.log('Resposta da API:', resposta);
                 const dados = await resposta.json();
-
+                console.log('Dados da API:', dados);
                 if (dados.status) {
                     if (!props.modoEdicao) {
-                        const novoCliente = { ...cliente, codigo: dados.codigo };
+                        const novoCliente = { ...cliente, id: dados.id };
                         props.setClientes([...props.listaClientes, novoCliente]);
                     } else {
                         const listaAtualizada = props.listaClientes.map((item) =>
-                            item.codigo === cliente.codigo ? cliente : item
+                            item.id === clienteEditandoId ? cliente : item
                         );
                         props.setClientes(listaAtualizada);
                     }
 
+                    // Limpar o estado do cliente em edição
+                    setClienteEditandoId(null);
                     props.exibirTabela(true);
                     window.alert('Cliente salvo com sucesso!');
                 } else {
                     window.alert(dados.mensagem);
                 }
             } catch (erro) {
-                window.alert('Erro ao executar a requisição: ' + erro.message);
+                console.error('Erro ao fazer a solicitação:', erro);
+                window.alert('Erro ao fazer a solicitação: ' + erro.message);
             }
         }
     }
@@ -66,18 +79,12 @@ export default function FormClientes(props) {
                     <Form.Group className="mb-3">
                         <Form.Label>CPF:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o CPF" value={cliente.cpf} id='cpf' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o CPF.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Nome:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o nome" value={cliente.nome} id='nome' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o nome.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
@@ -86,18 +93,12 @@ export default function FormClientes(props) {
                     <Form.Group className="mb-3">
                         <Form.Label>Data de Nascimento:</Form.Label>
                         <Form.Control type="date" value={cliente.dataNasc} id='dataNasc' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe a data de nascimento.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Telefone:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o telefone" value={cliente.telefone} id='telefone' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o telefone.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
@@ -106,18 +107,12 @@ export default function FormClientes(props) {
                     <Form.Group className="mb-3">
                         <Form.Label>Email:</Form.Label>
                         <Form.Control type="email" placeholder="Informe o email" value={cliente.email} id='email' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o email.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>CEP:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o CEP" value={cliente.cep} id='cep' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o CEP.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
@@ -126,18 +121,12 @@ export default function FormClientes(props) {
                     <Form.Group className="mb-3">
                         <Form.Label>Logradouro:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o logradouro" value={cliente.logradouro} id='logradouro' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o logradouro.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Número:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o número" value={cliente.numero} id='numero' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o número.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
@@ -151,10 +140,7 @@ export default function FormClientes(props) {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>Bairro:</Form.Label>
-                        <Form.Control type="text" placeholder="Informe o bairro" value={cliente.bairro} id='bairro' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o bairro.
-                        </Form.Control.Feedback>
+                        <Form.Control type="text" placeholder="Informe o bairro" value={cliente.bairro} id='bairro' onChange={manipulaMudanca} />
                     </Form.Group>
                 </Col>
             </Row>
@@ -163,18 +149,12 @@ export default function FormClientes(props) {
                     <Form.Group className="mb-3">
                         <Form.Label>Cidade:</Form.Label>
                         <Form.Control type="text" placeholder="Informe a cidade" value={cliente.cidade} id='cidade' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe a cidade.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label>UF:</Form.Label>
                         <Form.Control type="text" placeholder="Informe o UF" value={cliente.uf} id='uf' onChange={manipulaMudanca} required />
-                        <Form.Control.Feedback type='invalid'>
-                            Por favor, informe o UF.
-                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>

@@ -20,7 +20,7 @@ export default function FormProdutos(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/produto/${produto.id}` : '/produto';
+            const endpoint = props.modoEdicao ? `/produtos/${produto.id}` : '/produtos';
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {

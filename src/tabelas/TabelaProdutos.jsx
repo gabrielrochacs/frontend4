@@ -6,7 +6,7 @@ export default function TabelaProdutos(props) {
 
     function filtrarProdutos(e) {
         const termoBusca = e.currentTarget.value.toLowerCase();
-        fetch(urlBase + "/produto", { method: "GET" })
+        fetch(urlBase + "/produtos", { method: "GET" })
             .then((resposta) => resposta.json())
             .then((listaProdutos) => {
                 if (Array.isArray(listaProdutos)) {

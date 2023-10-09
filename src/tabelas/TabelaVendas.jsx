@@ -21,9 +21,8 @@ export default function TabelaVendas(props) {
     }
 
     function editarVenda(venda) {
-        // Adicione o campo 'cliente_id' ao objeto venda aqui
-        const vendaParaEditar = { ...venda, cliente_id: null }; // Defina o valor apropriado para 'cliente_id'
-        props.editarVenda(vendaParaEditar);
+        // Defina o estado modoEdicao como true e forneça a venda para edição
+        props.editarVenda(venda, true);
     }
 
     return (

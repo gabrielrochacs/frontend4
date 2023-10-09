@@ -2,10 +2,11 @@ import React from 'react';
 import { Table, Button, Container } from 'react-bootstrap';
 
 export default function TabelaItensVenda(props) {
-    function editarItemVenda(itemVenda) {
+    
+    function editaritensVenda(itensVenda) {
         // Adicione o campo 'cliente_id' ao objeto venda aqui
-        const itemVendaParaEditar = { ...itemVenda, cliente_id: null }; // Defina o valor apropriado para 'cliente_id'
-        props.editarItemVenda(itemVendaParaEditar);
+        const itensVendaParaEditar = { ...itensVenda, cliente_id: null }; // Defina o valor apropriado para 'cliente_id'
+        props.editaritensVenda(itensVendaParaEditar);
     }
 
     return (
@@ -27,20 +28,20 @@ export default function TabelaItensVenda(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.listaItensVenda?.map((itemVenda) => {
+                    {props.listaItensVenda?.map((itensVenda) => {
                         return (
-                            <tr key={itemVenda.id}>
-                                <td>{itemVenda.id}</td>
-                                <td>{itemVenda.produto_id}</td>
-                                <td>{itemVenda.quantidade}</td>
-                                <td>{itemVenda.venda_id}</td>
+                            <tr key={itensVenda.id}>
+                                <td>{itensVenda.id}</td>
+                                <td>{itensVenda.produto_id}</td>
+                                <td>{itensVenda.quantidade}</td>
+                                <td>{itensVenda.venda_id}</td>
                                 <td>
-                                    <Button variant='warning' onClick={() => editarItemVenda(itemVenda)}>
+                                    <Button variant='warning' onClick={() => editaritensVenda(itensVenda)}>
                                         Editar
                                     </Button>{' '}
                                     <Button variant='danger' onClick={() => {
                                         if (window.confirm("Confirma a exclusão do item de venda?"))
-                                            props.excluirItemVenda(itemVenda);
+                                            props.excluiritensVenda(itensVenda);
                                     }}>
                                         Excluir
                                     </Button>

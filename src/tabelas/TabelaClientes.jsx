@@ -6,7 +6,7 @@ export default function TabelaClientes(props) {
 
     function filtrarClientes(e) {
         const termoBusca = e.currentTarget.value.toLowerCase();
-        fetch(urlBase + "/cliente", { method: "GET" })
+        fetch(urlBase + "/clientes", { method: "GET" })
             .then((resposta) => resposta.json())
             .then((listaClientes) => {
                 if (Array.isArray(listaClientes)) {

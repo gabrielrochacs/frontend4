@@ -25,7 +25,7 @@ export default function TelaProdutos(props) {
     }
 
     function excluirProduto(produto) {
-        fetch(urlBase + '/produto', {
+        fetch(urlBase + '/produtos', {
             method: "DELETE",
             headers: { "Content-Type": 'application/json' },
             body: JSON.stringify(produto)
@@ -44,7 +44,7 @@ export default function TelaProdutos(props) {
     }
 
     useEffect(() => {
-        fetch(urlBase + "/produto", {
+        fetch(urlBase + "/produtos", {
             method: "GET"
         })
             .then((resposta) => {

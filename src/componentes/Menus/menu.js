@@ -19,7 +19,7 @@ export default function Menu(propriedades){
               <LinkContainer to='/clientes'><Dropdown.Item >Cadastro de Clientes</Dropdown.Item></LinkContainer>
               <LinkContainer to='/produtos'><Dropdown.Item >Cadastro de Produtos</Dropdown.Item></LinkContainer>
               <LinkContainer to='/vendas'><Dropdown.Item >Cadastro de Vendas</Dropdown.Item></LinkContainer>
-              <LinkContainer to='/ItensVenda'><Dropdown.Item >Cadastro de Itens para Vendas</Dropdown.Item></LinkContainer>
+              <LinkContainer to='/itensVenda'><Dropdown.Item >Cadastro de Itens para Vendas</Dropdown.Item></LinkContainer>
             </Dropdown.Menu>
           </Dropdown>
 

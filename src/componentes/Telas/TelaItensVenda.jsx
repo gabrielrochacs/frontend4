@@ -10,24 +10,24 @@ export default function TelaItensVenda(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
     const [atualizando, setAtualizando] = useState(false);
     const [atualizarTabela, setAtualizarTabela] = useState(false);
-    const [itemVendaEdicao, setItemVendaEdicao] = useState({
+    const [itensVendaEdicao, setItensVendaEdicao] = useState({
         id: "",
         produto_id: "",
         quantidade: "",
         venda_id: "",
     });
 
-    function preparaItemVenda(itemVenda) {
+    function preparaitensVenda(itensVenda) {
         setAtualizando(true);
-        setItemVendaEdicao(itemVenda);
+        setItensVendaEdicao(itensVenda);
         setExibirTabela(false);
     }
 
-    function excluirItemVenda(itemVenda) {
-        fetch(urlBase + '/itemvenda', {
+    function excluiritensVenda(itensVenda) {
+        fetch(urlBase + '/itensVendas', {
             method: "DELETE",
             headers: { "Content-Type": 'application/json' },
-            body: JSON.stringify(itemVenda)
+            body: JSON.stringify(itensVenda)
         }).then((resposta) => {
             return resposta.json();
         }).then((retorno) => {
@@ -43,7 +43,7 @@ export default function TelaItensVenda(props) {
     }
 
     useEffect(() => {
-        fetch(urlBase + "/itemvenda", {
+        fetch(urlBase + "/itensVendas", {
             method: "GET"
         })
             .then((resposta) => {
@@ -65,9 +65,9 @@ export default function TelaItensVenda(props) {
                 <Alert variant={"secondary"} className='text-center'>Itens de Venda</Alert>
                 {
                     exibirTabela ?
-                        <TabelaItensVenda listaItensVenda={itensVenda} exibirTabela={setExibirTabela} setItensVenda={setItensVenda} editarItemVenda={preparaItemVenda} atualizarTabela={atualizarTabela} setAtualizarTabela={setAtualizarTabela} excluirItemVenda={excluirItemVenda} />
+                        <TabelaItensVenda listaItensVenda={itensVenda} exibirTabela={setExibirTabela} setItensVenda={setItensVenda} editaritensVenda={preparaitensVenda} atualizarTabela={atualizarTabela} setAtualizarTabela={setAtualizarTabela} excluiritensVenda={excluiritensVenda} />
                         :
-                        <FormItensVenda listaItensVenda={itensVenda} exibirTabela={setExibirTabela} setItensVenda={setItensVenda} modoEdicao={atualizando} itemVenda={itemVendaEdicao} />
+                        <FormItensVenda listaItensVenda={itensVenda} exibirTabela={setExibirTabela} setItensVenda={setItensVenda} modoEdicao={atualizando} itensVenda={itensVendaEdicao} />
                 }
             </Container>
         </Paginas>

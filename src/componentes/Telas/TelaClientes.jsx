@@ -33,7 +33,7 @@ export default function TelaClientes(props) {
     }
 
     function excluirCliente(cliente) {
-        fetch(urlBase + '/cliente', {
+        fetch(urlBase + '/clientes', {
             method: "DELETE",
             headers: { "Content-Type": 'application/json' },
             body: JSON.stringify(cliente)
@@ -52,7 +52,7 @@ export default function TelaClientes(props) {
     }
 
     useEffect(() => {
-        fetch(urlBase + "/cliente", {
+        fetch(urlBase + "/clientes", {
             method: "GET"
         })
             .then((resposta) => {
