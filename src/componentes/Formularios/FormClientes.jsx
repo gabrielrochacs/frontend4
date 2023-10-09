@@ -11,11 +11,11 @@ export default function FormClientes(props) {
         setCliente({ ...cliente, [id]: value });
     }
 
-    function editarCliente(id) {
+    function editarCliente(cpf) {
         // Quando clicar em editar, definir o id do cliente em edição
-        setClienteEditandoId(id);
+        setClienteEditandoId(cpf);
         // Encontrar o cliente pelo id
-        const clienteEditando = props.listaClientes.find((c) => c.id === id);
+        const clienteEditando = props.listaClientes.find((c) => c.cpf === cpf);
         // Preencher o formulário com os dados do cliente a ser editado
         setCliente(clienteEditando);
     }
@@ -25,7 +25,7 @@ export default function FormClientes(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/clientes/${clienteEditandoId}` : '/clientes';
+            const endpoint = props.modoEdicao ? `/clientes/${clienteEditandoId}{clienteEditandoId}` : '/clientes';
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
