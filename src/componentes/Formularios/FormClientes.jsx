@@ -25,7 +25,7 @@ export default function FormClientes(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/clientes${clienteEditandoId}` : '/clientes';
+            const endpoint = props.modoEdicao ? '/clientes/' + clienteEditandoId : '/clientes';
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
