@@ -3,12 +3,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { urlBase } from '../../utilitarios/definicoes';
 
 export default function FormProdutos(props) {
-    const [produto, setProduto] = useState({
-        id: null, // O ID será gerado automaticamente
-        nome: '',
-        preco: '',
-        descricao: '',
-    });
+    const [produto, setProduto] = useState(props.produto);
 
     function manipulaMudanca(e) {
         const { id, value } = e.target;
@@ -20,7 +15,7 @@ export default function FormProdutos(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/produtos/${produto.id}` : '/produtos';
+            const endpoint = props.modoEdicao ? `/produtos` : '/produtos';
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
@@ -29,29 +24,34 @@ export default function FormProdutos(props) {
                     body: JSON.stringify(produto),
                 });
 
-                const dados = await resposta.json();
+                if (resposta.status === 200) {
+                    const dados = await resposta.json();
 
-                if (dados.status) {
-                    if (!props.modoEdicao) {
-                        const novoProduto = { ...produto, id: dados.novoId };
-                        props.setProdutos([...props.listaProdutos, novoProduto]);
+                    if (dados.status) {
+                        if (!props.modoEdicao) {
+                            const novoProduto = { ...produto, id: dados.id };
+                            props.setProdutos([...props.listaProdutos, novoProduto]);
+                        } else {
+                            const listaAtualizada = props.listaProdutos.map((item) =>
+                                item.id === produto.id ? produto : item
+                            );
+                            props.setProdutos(listaAtualizada);
+                        }
+
+                        props.exibirTabela(true);
+                        window.alert('Produto salvo com sucesso!');
                     } else {
-                        const listaAtualizada = props.listaProdutos.map((item) =>
-                            item.id === produto.id ? produto : item
-                        );
-                        props.setProdutos(listaAtualizada);
+                        window.alert(dados.mensagem);
                     }
-
-                    props.exibirTabela(true);
-                    window.alert('Produto salvo com sucesso!');
                 } else {
-                    window.alert(dados.mensagem);
+                    window.alert('Erro na requisição: ' + resposta.status);
                 }
             } catch (erro) {
                 window.alert('Erro ao executar a requisição: ' + erro.message);
             }
         }
     }
+
 
     function validarCampos() {
         const camposObrigatorios = ['nome', 'preco', 'descricao'];
@@ -100,12 +100,12 @@ export default function FormProdutos(props) {
 
             <Row>
                 <Col>
-                    <Button variant="primary" type="submit">
+                    <Button variant="success" type="submit">
                         {props.modoEdicao ? 'Atualizar' : 'Salvar'}
                     </Button>{' '}
                     {!props.modoEdicao && (
                         <Button variant="secondary" onClick={() => props.exibirTabela(true)}>
-                            Cancelar
+                            Voltar
                         </Button>
                     )}
                 </Col>

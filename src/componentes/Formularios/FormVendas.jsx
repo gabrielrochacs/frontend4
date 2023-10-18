@@ -32,7 +32,7 @@ export default function FormVendas(props) {
 
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
-            const endpoint = props.modoEdicao ? `/vendas/${venda.id}` : '/vendas';
+            const endpoint = props.modoEdicao ? `/vendas` : `/vendas`;
 
             try {
                 const resposta = await fetch(urlBase + endpoint, {
@@ -54,20 +54,31 @@ export default function FormVendas(props) {
                             .then((dados) => {
                                 if (Array.isArray(dados)) {
                                     props.setVendas([...dados]);
+                                    // Redirecione para a página da tabela após a atualização
+                                    props.exibirTabela(true);
+                                    // Recarregue a página para exibir os novos dados
+                                    window.location.reload();
                                 }
                             })
                             .catch((erro) => {
                                 console.error("Erro ao buscar os dados das vendas: " + erro);
                             });
 
-                        props.exibirTabela(true);
                         window.alert('Venda salva com sucesso!');
-                        }}
+                    } else {
+                        // Se estiver em modo de edição, você pode simplesmente redirecionar para a página da tabela
+                        props.exibirTabela(true);
+                        // Recarregue a página para exibir os novos dados
+                        window.location.reload();
+                        window.alert('Venda atualizada com sucesso!');
+                    }
+                }
             } catch (erro) {
                 window.alert('Erro ao executar a requisição: ' + erro.message);
             }
         }
     }
+
 
     function validarCampos() {
         const camposObrigatorios = ['data', 'valor', 'cliente_id'];

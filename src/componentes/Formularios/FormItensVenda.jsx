@@ -50,7 +50,7 @@ export default function FormItensVenda(props) {
         if (validarCampos()) {
             const metodo = props.modoEdicao ? 'PUT' : 'POST';
             // No método manipulaSubmissao, altere o endpoint para '/itensVenda' (com a primeira letra em maiúscula) ao criar um novo item de venda
-            const endpoint = props.modoEdicao ? '/itensVendas' : '/itensVendas';
+            const endpoint = props.modoEdicao ? `/itensVendas` : `/itensVendas`;
 
 
             try {
