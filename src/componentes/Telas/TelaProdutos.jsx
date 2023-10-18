@@ -25,11 +25,10 @@ export default function TelaProdutos(props) {
     }
 
     function excluirProduto(produto) {
-        const id = produto.id;
-
-        fetch(urlBase + `/produtos`, {
+        fetch(urlBase + "/produtos", {
             method: "DELETE",
-            headers: { "Content-Type": 'application/json' }
+            headers: { "Content-Type": 'application/json' },
+            body: JSON.stringify(produto)
         })
             .then((resposta) => resposta.json())
             .then((retorno) => {
