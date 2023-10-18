@@ -24,7 +24,7 @@ export default function Menu(propriedades){
           </Dropdown>
 
             <Nav.Link href="#">Ajuda</Nav.Link>
-            <Nav.Link href="#">Sair</Nav.Link>
+            <Nav.Link href="/">Sair</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
